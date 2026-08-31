@@ -83,8 +83,9 @@ img { max-width: 100%; display: block; }
 .media-item .dl:hover { background: var(--gold); color: #14100f; }
 .video-block { padding: 10px 0 60px; }
 .video-block h3 { font-size: 1.1rem; margin-bottom: 16px; color: var(--gold); }
-.video-block video { width: 100%; background: #000; }
-.video-block .actions { margin-top: 14px; }
+.video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.video-item video { width: 100%; background: #000; display: block; }
+.video-item .actions { margin-top: 10px; }
 
 footer { border-top: 1px solid var(--line); padding: 30px 0 50px; text-align: center; color: var(--ink-dim); font-size: 0.82rem; }
 footer a { color: var(--gold); text-decoration: none; cursor: pointer; }
@@ -125,10 +126,12 @@ footer a { color: var(--gold); text-decoration: none; cursor: pointer; }
   .feature .copy { padding: 36px 24px; }
   .profile-grid { grid-template-columns: repeat(2, 1fr); }
   .media-grid { grid-template-columns: repeat(2, 1fr); }
+  .video-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 520px) {
   .profile-grid { grid-template-columns: 1fr 1fr; gap: 24px 16px; }
   .media-grid { grid-template-columns: 1fr; }
+  .video-grid { grid-template-columns: 1fr; }
   .masthead nav { gap: 18px; flex-wrap: wrap; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
@@ -175,7 +178,10 @@ const SEED_PROFILES = [
       'https://picsum.photos/seed/elena-voss-2/1000/1250',
       'https://picsum.photos/seed/elena-voss-3/1000/1250'
     ],
-    video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
+    videos: [
+      'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
+      'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/bigbuckbunny.mp4'
+    ],
     featured: true
   },
   {
@@ -189,7 +195,7 @@ const SEED_PROFILES = [
       'https://picsum.photos/seed/amara-chen-1/1000/1250',
       'https://picsum.photos/seed/amara-chen-2/1000/1250'
     ],
-    video: '',
+    videos: [],
     featured: false
   },
   {
@@ -204,7 +210,7 @@ const SEED_PROFILES = [
       'https://picsum.photos/seed/sofia-delacroix-2/1000/1250',
       'https://picsum.photos/seed/sofia-delacroix-3/1000/1250'
     ],
-    video: '',
+    videos: [],
     featured: false
   }
 ];
@@ -324,15 +330,22 @@ function renderProfile(id) {
     </div>
   `).join('');
 
-  const videoHtml = profile.video ? `
+  const videos = profile.videos || (profile.video ? [profile.video] : []);
+  const videoHtml = videos.length ? `
     <section class="video-block">
-      <h3>Video</h3>
-      <video controls preload="metadata" poster="${profile.cover}">
-        <source src="${profile.video}">
-        Your browser doesn't support embedded video.
-      </video>
-      <div class="actions">
-        <a class="btn wine" href="${profile.video}" download target="_blank" rel="noopener">Download video</a>
+      <h3>Videos</h3>
+      <div class="video-grid">
+        ${videos.map((url, i) => `
+          <div class="video-item">
+            <video controls preload="metadata" poster="${profile.cover}">
+              <source src="${url}">
+              Your browser doesn't support embedded video.
+            </video>
+            <div class="actions">
+              <a class="btn wine" href="${url}" download target="_blank" rel="noopener">Download video ${i + 1}</a>
+            </div>
+          </div>
+        `).join('')}
       </div>
     </section>
   ` : '';
@@ -401,7 +414,11 @@ function renderAdmin() {
           <div class="gallery-repeat" id="galleryRepeat"></div>
           <button type="button" class="btn" id="addGalleryRow">+ Add photo</button>
         </div>
-        <div class="field"><label for="f-video">Video URL (mp4 link, optional)</label><input type="url" id="f-video" placeholder="https://.../video.mp4"></div>
+        <div class="field">
+          <label>Video URLs (mp4 links, optional)</label>
+          <div class="gallery-repeat" id="videoRepeat"></div>
+          <button type="button" class="btn" id="addVideoRow">+ Add video</button>
+        </div>
         <div class="field"><label><input type="checkbox" id="f-featured" style="width:auto; display:inline-block; margin-right:8px;">Feature on home page</label></div>
         <div class="form-actions">
           <button type="submit" class="btn solid">Save profile</button>
@@ -419,6 +436,7 @@ function renderAdmin() {
 
   const form = document.getElementById('profileForm');
   const galleryRepeat = document.getElementById('galleryRepeat');
+  const videoRepeat = document.getElementById('videoRepeat');
   const notice = document.getElementById('notice');
   const formTitle = document.getElementById('formTitle');
 
@@ -431,11 +449,22 @@ function renderAdmin() {
   }
   document.getElementById('addGalleryRow').addEventListener('click', () => addGalleryRow());
 
+  function addVideoRow(value = '') {
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `<input type="url" class="video-url" placeholder="https://.../video.mp4" value="${value}"><button type="button" class="btn">Remove</button>`;
+    row.querySelector('button').addEventListener('click', () => row.remove());
+    videoRepeat.appendChild(row);
+  }
+  document.getElementById('addVideoRow').addEventListener('click', () => addVideoRow());
+
   function resetForm() {
     form.reset();
     document.getElementById('f-id').value = '';
     galleryRepeat.innerHTML = '';
     addGalleryRow();
+    videoRepeat.innerHTML = '';
+    addVideoRow();
     formTitle.textContent = 'Add a profile';
   }
   document.getElementById('clearFormBtn').addEventListener('click', resetForm);
@@ -461,6 +490,7 @@ function renderAdmin() {
     }
 
     const gallery = Array.from(galleryRepeat.querySelectorAll('.gallery-url')).map(i => i.value.trim()).filter(Boolean);
+    const videos = Array.from(videoRepeat.querySelectorAll('.video-url')).map(i => i.value.trim()).filter(Boolean);
 
     const profile = {
       id, name,
@@ -469,7 +499,7 @@ function renderAdmin() {
       bio: document.getElementById('f-bio').value.trim(),
       cover: document.getElementById('f-cover').value.trim() || 'https://picsum.photos/seed/' + id + '/900/1200',
       gallery,
-      video: document.getElementById('f-video').value.trim(),
+      videos,
       featured: document.getElementById('f-featured').checked
     };
 
@@ -493,10 +523,12 @@ function renderAdmin() {
     document.getElementById('f-tagline').value = p.tagline || '';
     document.getElementById('f-bio').value = p.bio || '';
     document.getElementById('f-cover').value = p.cover || '';
-    document.getElementById('f-video').value = p.video || '';
     document.getElementById('f-featured').checked = !!p.featured;
     galleryRepeat.innerHTML = '';
     (p.gallery && p.gallery.length ? p.gallery : ['']).forEach(url => addGalleryRow(url));
+    videoRepeat.innerHTML = '';
+    const existingVideos = p.videos && p.videos.length ? p.videos : (p.video ? [p.video] : ['']);
+    existingVideos.forEach(url => addVideoRow(url));
     formTitle.textContent = `Editing "${p.name}"`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
