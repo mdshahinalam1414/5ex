@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>মানুষ-পত্রিকা — ব্যক্তি নির্দেশিকা</title>
+<meta name="description" content="একটি ম্যাগাজিন-স্টাইল ব্যক্তি নির্দেশিকা — নাম, ঠিকানা, ছবি ও ভিডিও সমেত।" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --paper: #EDE7D8;
+  --paper-deep: #E2DAC5;
+  --ink: #1D1A14;
+  --ink-soft: #55503f;
+  --oxblood: #6E2A2E;
+  --mustard: #B8863C;
+  --rule: rgba(29, 26, 20, 0.18);
+
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Work Sans", "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Masthead ---------- */
+
+.masthead {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2.6rem 1.5rem 1.6rem;
+  border-bottom: 3px solid var(--ink);
+}
+
+.masthead__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+  margin-bottom: 1.4rem;
+}
+
+.masthead__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(3rem, 9vw, 6.2rem);
+  line-height: 0.92;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.masthead__title-accent {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--oxblood);
+}
+
+.masthead__tagline {
+  font-size: 1.05rem;
+  max-width: 46ch;
+  color: var(--ink-soft);
+  margin: 0.9rem 0 0;
+  line-height: 1.5;
+}
+
+.masthead__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  margin-top: 1.8rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--rule);
+  flex-wrap: wrap;
+}
+
+.search { flex: 1; min-width: 220px; }
+
+.search input {
+  width: 100%;
+  max-width: 420px;
+  padding: 0.65rem 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  color: var(--ink);
+}
+
+.search input:focus { outline: 2px solid var(--oxblood); outline-offset: 1px; }
+.search input::placeholder { color: var(--ink-soft); }
+
+.count { font-size: 0.9rem; color: var(--ink-soft); margin: 0; white-space: nowrap; }
+
+/* ---------- State ---------- */
+
+.state {
+  max-width: 1180px;
+  margin: 2.4rem auto;
+  padding: 0 1.5rem;
+  font-size: 1.02rem;
+  color: var(--ink-soft);
+  max-width: 60ch;
+  line-height: 1.6;
+}
+.state strong { color: var(--ink); }
+
+/* ---------- Grid ---------- */
+
+.grid {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2.2rem 1.5rem 4rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.4rem 2rem;
+}
+@media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .grid { grid-template-columns: 1fr; gap: 2.6rem; } }
+
+.card { display: flex; flex-direction: column; }
+
+.card__frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+}
+
+.card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(0.15) contrast(1.03);
+}
+
+.card__folio {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.6rem;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: var(--paper);
+  background: rgba(29, 26, 20, 0.72);
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+}
+
+.card__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(29, 26, 20, 0.28);
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.card__frame:hover .card__play,
+.card__frame:focus-within .card__play { opacity: 1; }
+
+.card__play-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  background: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--oxblood);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+
+.card__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin: 0.85rem 0 0.25rem;
+  line-height: 1.15;
+}
+
+.card__address {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin: 0 0 0.6rem;
+  border-left: 2px solid var(--mustard);
+  padding-left: 0.6rem;
+}
+
+.card__video-toggle {
+  align-self: flex-start;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--oxblood);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.card__video-panel { margin-top: 0.8rem; }
+
+.card__video-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border: 1px solid var(--rule);
+}
+.card__video-frame video,
+.card__video-frame iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+}
+
+.card__video-download {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--ink);
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  padding: 0.4rem 0.75rem;
+  border-radius: 3px;
+  text-decoration: none;
+}
+.card__video-download:hover { background: var(--mustard); border-color: var(--mustard); color: var(--paper); }
+
+.card__video-note {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin-top: 0.4rem;
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  border-top: 1px solid var(--rule);
+  padding: 1.6rem 1.5rem 2.4rem;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+.footer p { font-size: 0.85rem; color: var(--ink-soft); max-width: 60ch; }
+.footer code { background: var(--paper-deep); padding: 0.1rem 0.35rem; border-radius: 2px; }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="masthead__row">
+      <p class="masthead__issue">সংখ্যা ০১ — চলমান সংস্করণ</p>
+      <p class="masthead__date" id="todayDate"></p>
+    </div>
+    <h1 class="masthead__title">মানুষ<span class="masthead__title-accent">-পত্রিকা</span></h1>
+    <p class="masthead__tagline">একটি বাড়তে-থাকা খাতা — প্রতিটি পাতায় একজন মানুষ, তার নাম, ঠিকানা, মুখ আর কণ্ঠ।</p>
+
+    <div class="masthead__bar">
+      <div class="search">
+        <input type="text" id="searchInput" placeholder="নাম বা ঠিকানা দিয়ে খুঁজুন…" autocomplete="off" />
+      </div>
+      <p class="count" id="countLabel"></p>
+    </div>
+  </header>
+
+  <main>
+    <section id="stateArea" class="state" hidden></section>
+    <section id="grid" class="grid" aria-live="polite"></section>
+  </main>
+
+  <footer class="footer">
+    <p>এই সাইটের সব তথ্য এই ফাইলের ভেতরেই রাখা — নতুন মানুষ যোগ করতে <code>README.md</code> দেখুন।</p>
+  </footer>
+
+  <template id="cardTemplate">
+    <article class="card">
+      <div class="card__frame">
+        <img class="card__img" loading="lazy" alt="" />
+        <span class="card__folio"></span>
+        <button class="card__play" type="button" hidden aria-label="ভিডিও দেখুন">
+          <span class="card__play-icon">▶</span>
+        </button>
+      </div>
+      <h2 class="card__name"></h2>
+      <p class="card__address"></p>
+      <button class="card__video-toggle" type="button" hidden>ভিডিও দেখুন</button>
+      <div class="card__video-panel" hidden></div>
+    </article>
+  </template>
+
+  <script>
+  // ==========================================================
+  // এখানেই সব মানুষের তথ্য — নতুন মানুষ যোগ করতে নিচে একটা নতুন
+  // { ... } লাইন যোগ করুন। কোনো বাইরের Google Sheet বা Drive
+  // লাগবে না, সবকিছু এই একটা ফাইলেই থাকে।
+  //
+  // image / video তে দুই ধরনের লিংক দেওয়া যাবে:
+  //   ১) এই সাইটের সাথেই আপলোড করা ফাইলের পাথ, যেমন "images/rahat.jpg"
+  //   ২) যেকোনো সরাসরি ছবি/ভিডিও-লিংক (imgur, direct URL ইত্যাদি)
+  // video না থাকলে সেই লাইনটা বাদ দিন বা "" রাখুন।
+  // ==========================================================
+
+  const PEOPLE = [
+    {
+      name: "রাহাত হোসেন",
+      address: "ধানমন্ডি, ঢাকা",
+      image: "images/rahat.jpg",
+      video: "",
+    },
+    {
+      name: "নাসরিন আক্তার",
+      address: "চট্টগ্রাম",
+      image: "images/nasrin.jpg",
+      video: "videos/nasrin-intro.mp4",
+    },
+
+    // এখানে নতুন মানুষ যোগ করুন — উপরের কারো পরে একটা কমা দিয়ে
+    // { name: "...", address: "...", image: "...", video: "" },
+  ];
+
+  // ==========================================================
+  // মূল স্ক্রিপ্ট — ম্যাগাজিন-কার্ড আকারে ছবি/ভিডিও/নাম/ঠিকানা
+  // দেখানো এবং সার্চ ফিল্টার। এই অংশ বদলানোর দরকার নেই।
+  // ==========================================================
+
+  const gridEl = document.getElementById("grid");
+  const stateEl = document.getElementById("stateArea");
+  const countEl = document.getElementById("countLabel");
+  const searchEl = document.getElementById("searchInput");
+  const cardTemplate = document.getElementById("cardTemplate");
+  const todayDateEl = document.getElementById("todayDate");
+
+  todayDateEl.textContent = new Date().toLocaleDateString("bn-BD", {
+    year: "numeric", month: "long", day: "numeric",
+  });
+
+  render(PEOPLE);
+
+  searchEl.addEventListener("input", () => {
+    const q = searchEl.value.trim().toLowerCase();
+    const filtered = q
+      ? PEOPLE.filter((p) => (p.name + " " + p.address).toLowerCase().includes(q))
+      : PEOPLE;
+    render(filtered);
+  });
+
+  function render(people) {
+    gridEl.innerHTML = "";
+    countEl.textContent = people.length ? `${toBanglaNumber(people.length)} জন` : "";
+
+    if (people.length === 0) {
+      showState("কেউ পাওয়া যায়নি। নাম বা ঠিকানা দিয়ে খুঁজে দেখুন, অথবা PEOPLE তালিকায় নতুন এন্ট্রি যোগ করুন।");
+      return;
+    }
+    hideState();
+
+    people.forEach((person, i) => {
+      const node = cardTemplate.content.cloneNode(true);
+      const img = node.querySelector(".card__img");
+      const folio = node.querySelector(".card__folio");
+      const name = node.querySelector(".card__name");
+      const address = node.querySelector(".card__address");
+      const playBtn = node.querySelector(".card__play");
+      const videoToggle = node.querySelector(".card__video-toggle");
+      const videoPanel = node.querySelector(".card__video-panel");
+
+      img.src = person.image || "";
+      img.alt = person.name || "ছবি";
+      img.onerror = () => {
+        img.style.objectFit = "contain";
+        img.style.padding = "1.2rem";
+        img.src = "data:image/svg+xml;utf8," + encodeURIComponent(
+          `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="250"><rect width="100%" height="100%" fill="#E2DAC5"/><text x="50%" y="50%" font-family="sans-serif" font-size="14" fill="#55503f" text-anchor="middle">ছবি পাওয়া যায়নি</text></svg>`
+        );
+      };
+
+      folio.textContent = "#" + toBanglaNumber(i + 1);
+      name.textContent = person.name || "নাম নেই";
+      address.textContent = person.address || "ঠিকানা নেই";
+
+      if (person.video) {
+        const videoInfo = describeVideo(person.video);
+
+        playBtn.hidden = false;
+        videoToggle.hidden = false;
+
+        const openVideo = () => {
+          if (!videoPanel.hidden) return;
+          videoPanel.hidden = false;
+          videoToggle.textContent = "ভিডিও লুকান";
+          videoPanel.innerHTML = buildVideoPanelHtml(videoInfo, name.textContent);
+        };
+        const closeVideo = () => {
+          videoPanel.hidden = true;
+          videoPanel.innerHTML = "";
+          videoToggle.textContent = "ভিডিও দেখুন";
+        };
+        const toggleVideo = () => (videoPanel.hidden ? openVideo() : closeVideo());
+
+        playBtn.addEventListener("click", toggleVideo);
+        videoToggle.addEventListener("click", toggleVideo);
+      }
+
+      gridEl.appendChild(node);
+    });
+  }
+
+  function buildVideoPanelHtml(videoInfo, personName) {
+    let playerHtml = "";
+    if (videoInfo.kind === "file") {
+      playerHtml = `<video controls preload="metadata" src="${escapeAttr(videoInfo.playUrl)}"></video>`;
+    } else {
+      playerHtml = `<iframe src="${escapeAttr(videoInfo.playUrl)}" allow="autoplay; encrypted-media" allowfullscreen title="${escapeAttr(personName)} — ভিডিও"></iframe>`;
+    }
+
+    let downloadHtml = "";
+    if (videoInfo.downloadUrl) {
+      downloadHtml = `<a class="card__video-download" href="${escapeAttr(videoInfo.downloadUrl)}" download target="_blank" rel="noopener">ভিডিও ডাউনলোড করুন</a>`;
+    } else {
+      downloadHtml = `<p class="card__video-note">এই ভিডিওটি সরাসরি ডাউনলোড করা যাচ্ছে না — শুধু দেখা যাবে।</p>`;
+    }
+
+    return `<div class="card__video-frame">${playerHtml}</div>${downloadHtml}`;
+  }
+
+  function showState(html) { stateEl.hidden = false; stateEl.innerHTML = html; }
+  function hideState() { stateEl.hidden = true; stateEl.innerHTML = ""; }
+
+  function toBanglaNumber(n) {
+    const digits = ["০","১","২","৩","৪","৫","৬","৭","৮","৯"];
+    return String(n).split("").map((ch) => (/[0-9]/.test(ch) ? digits[ch] : ch)).join("");
+  }
+
+  function escapeAttr(str) { return String(str).replace(/"/g, "&quot;"); }
+
+  // ---------- ভিডিও লিংক বোঝা: সরাসরি ফাইল / ইউটিউব / অন্য এমবেড-যোগ্য লিংক ----------
+  function describeVideo(rawUrl) {
+    const url = rawUrl.trim();
+
+    // YouTube
+    let m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{6,})/);
+    if (m) {
+      return {
+        kind: "embed",
+        playUrl: `https://www.youtube.com/embed/${m[1]}`,
+        downloadUrl: null, // ইউটিউব ভিডিও এখান থেকে ডাউনলোডযোগ্য নয়
+      };
+    }
+
+    // সরাসরি ভিডিও ফাইল (আপলোড করা ফাইল বা .mp4/.webm/.mov ইত্যাদি লিংক)
+    if (/\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i.test(url) || !/^https?:\/\//i.test(url)) {
+      return { kind: "file", playUrl: url, downloadUrl: url };
+    }
+
+    // অন্য কোনো সরাসরি লিংক — iframe দিয়ে দেখানোর চেষ্টা
+    return { kind: "embed", playUrl: url, downloadUrl: url };
+  }
+  </script>
+</body>
+</html>
